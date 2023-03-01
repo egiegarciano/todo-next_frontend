@@ -6,4 +6,15 @@
   html {
     font-family: Nunito Sans, sans-serif;
   }
+
+  label {
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: white;
+  }
+
+  input {
+    color: black;
+    outline: none;
+  }
 }

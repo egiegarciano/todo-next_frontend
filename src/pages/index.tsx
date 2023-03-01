@@ -1,6 +1,8 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
-    <main className='mt-4 text-center'>
+    <main className='mt-10 text-center'>
       <h1 className='mb-4 text-3xl font-semibold text-blue-700'>
         Simply Your Todos. Woohoo!
       </h1>
@@ -10,12 +12,12 @@ export default function Home() {
         Todo Woo to help you make sense of all of your opportunities and live
         that life that matters most to you. Your new organized life awaits.
       </p>
-      <button
-        type='button'
-        className='rounded bg-blue-600 px-4 py-1 text-lg font-semibold text-white'
+      <Link
+        href='/create-todo'
+        className='mt-4 rounded bg-blue-600 px-4 py-2 text-lg font-semibold text-white'
       >
         Create Todo
-      </button>
+      </Link>
     </main>
   )
 }
