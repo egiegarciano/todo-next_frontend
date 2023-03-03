@@ -1,39 +1,25 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import {
-  useForm,
   SubmitHandler,
   FieldValues,
-  DeepPartial,
+  UseFormHandleSubmit,
 } from 'react-hook-form'
 
 type Props<T extends FieldValues> = {
-  onSubmit: SubmitHandler<T>
   children: ReactNode
-  defaultValues?: DeepPartial<T>
+  handleSubmit: UseFormHandleSubmit<T>
+  onSubmit: SubmitHandler<T>
 }
 
-const Form = <T extends FieldValues>({
-  onSubmit,
-  defaultValues,
-  children,
-}: Props<T>) => {
-  const methods = useForm({ defaultValues })
-  const { handleSubmit } = methods
-
+const Form = <T extends FieldValues>(props: Props<T>) => {
+  const { children, handleSubmit, onSubmit } = props
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {React.Children.map(children, (child: any) => {
-        console.log(typeof child)
-        return child?.props.name
-          ? React.createElement(child?.type, {
-              ...{
-                ...child?.props,
-                register: methods.register,
-                key: child?.props.name,
-              },
-            })
-          : child
-      })}
+    <form
+      id='create-todo-form'
+      onSubmit={handleSubmit(onSubmit)}
+      className='lex w-full flex-col space-y-6 rounded-md bg-blue-500 px-4 py-10 text-left md:w-[380px] lg:w-[500px]'
+    >
+      {children}
     </form>
   )
 }

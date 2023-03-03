@@ -3,6 +3,8 @@ import Link from 'next/link'
 
 import Clipboard from './icons/Clipboard'
 import Bars3 from './icons/Bars3'
+import { verifiedLinks } from '@/constants/linksData'
+import { unverifiedLinks } from '@/constants/linksData'
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -16,7 +18,7 @@ const NavBar = () => {
     }
   }, [])
 
-  const handleOnClick = () => {
+  const handleOnCloseMenu = () => {
     setIsOpen(false)
     document.body.classList.remove('overflow-hidden')
   }
@@ -32,13 +34,13 @@ const NavBar = () => {
   }
 
   return (
-    <nav className='relative bg-blue-500 px-4 py-2 text-white'>
+    <nav className='relative bg-blue-500 px-4 py-2 text-white lg:px-24 xl:px-72'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center space-x-2'>
           <Clipboard />
           <Link
             href='/'
-            onClick={handleOnClick}
+            onClick={handleOnCloseMenu}
             className='text-lg font-semibold'
           >
             Todo Wohoo
@@ -52,16 +54,20 @@ const NavBar = () => {
         </div>
       </div>
       <div
-        className={`absolute top-[52px] right-0 z-20 h-screen w-[270px] flex-col space-y-4 overflow-hidden bg-blue-400 p-6 text-base font-semibold tracking-wider lg:top-0 lg:h-auto lg:w-auto lg:flex-row lg:space-y-0 lg:space-x-4 lg:bg-transparent lg:p-[14px] ${
+        className={`absolute top-[52px] right-0 z-20 h-screen w-[270px] flex-col space-y-4 overflow-hidden bg-blue-400 p-6 text-base font-semibold tracking-wider lg:top-0 lg:h-auto lg:w-auto lg:flex-row lg:space-y-0 lg:space-x-4 lg:bg-transparent lg:py-[14px] lg:px-24 xl:px-72 ${
           isOpen ? 'flex' : 'hidden lg:flex'
         }`}
-        onClick={handleOnClick}
       >
-        <Link href='#home'>Current</Link>
-        <Link href='#home'>Create</Link>
-        <Link href='#home'>Completed</Link>
-        <Link href='#home'>Sign Up</Link>
-        <Link href='#home'>Login</Link>
+        {verifiedLinks.map((item) => (
+          <Link key={item.name} href={item.href} onClick={handleOnCloseMenu}>
+            {item.name}
+          </Link>
+        ))}
+        {unverifiedLinks.map((item) => (
+          <Link key={item.name} href={item.href} onClick={handleOnCloseMenu}>
+            {item.name}
+          </Link>
+        ))}
       </div>
     </nav>
   )

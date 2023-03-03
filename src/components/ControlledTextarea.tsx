@@ -1,13 +1,13 @@
 import React, { HTMLAttributes } from 'react'
-import { Control, FieldPath, FieldValues, useController } from 'react-hook-form'
+import { FieldValues, useController } from 'react-hook-form'
 
-type Props<T extends FieldValues> = {
-  name: FieldPath<T>
-  control: Control<T>
-} & HTMLAttributes<HTMLTextAreaElement>
+import { ControlledProps } from '@/types'
+
+type Props<T extends FieldValues> = ControlledProps<T> &
+  HTMLAttributes<HTMLTextAreaElement>
 
 const ControlledTextarea = <T extends FieldValues>(props: Props<T>) => {
-  const { name, control, ...rest } = props
+  const { name, control, label, ...rest } = props
   const { field, fieldState } = useController({ name, control })
   const { value, ref, onChange } = field
   const { error } = fieldState
@@ -15,7 +15,7 @@ const ControlledTextarea = <T extends FieldValues>(props: Props<T>) => {
   return (
     <div className='flex flex-col space-y-1'>
       {error?.message && <div>{error.message}</div>}
-      <label htmlFor={name}>Memo:</label>
+      <label htmlFor={name}>{label}</label>
       <textarea
         value={value ?? ''}
         onChange={onChange}

@@ -1,25 +1,23 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import ControlledInput from '@/components/ControlledInput'
-import ControlledTextarea from '@/components/ControlledTextarea'
-import ControlledCheckbox from '@/components/ControlledCheckbox'
 import Section from '@/components/Section'
 import Form from '@/components/Form'
 import Button from '@/components/Button'
 
 type FormInputs = {
-  title: string
-  memo: string
-  is_important: boolean
+  username: string
+  password: string
+  password2: string
 }
 
 const INITIAL_VALUES = {
-  title: '',
-  memo: '',
-  is_important: false,
+  username: '',
+  password: '',
+  password2: '',
 }
 
-const CreateTodo = () => {
+const SignUp = () => {
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
   })
@@ -29,14 +27,20 @@ const CreateTodo = () => {
   }
 
   return (
-    <Section title='Create a to do'>
+    <Section title='Sign Up'>
       <Form handleSubmit={handleSubmit} onSubmit={onSubmit}>
-        <ControlledInput name='title' control={control} label='Title:' />
-        <ControlledTextarea name='memo' control={control} label='Memo:' />
-        <ControlledCheckbox
-          name='is_important'
+        <ControlledInput name='username' control={control} label='Username:' />
+        <ControlledInput
+          name='password'
+          type='password'
           control={control}
-          label='Mark as important:'
+          label='Password:'
+        />
+        <ControlledInput
+          name='password2'
+          type='password'
+          control={control}
+          label='Confirm Password:'
         />
       </Form>
       <Button />
@@ -44,4 +48,4 @@ const CreateTodo = () => {
   )
 }
 
-export default CreateTodo
+export default SignUp
