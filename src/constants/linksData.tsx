@@ -6,7 +6,7 @@ type Link = {
 export const verifiedLinks: Link[] = [
   {
     name: 'Current',
-    href: '/current',
+    href: '/current-todo',
   },
   {
     name: 'Create',
@@ -14,7 +14,7 @@ export const verifiedLinks: Link[] = [
   },
   {
     name: 'Completed',
-    href: '#home',
+    href: '/completed',
   },
 ]
 
