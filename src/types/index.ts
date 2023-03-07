@@ -5,3 +5,12 @@ export type ControlledProps<T extends FieldValues> = {
   control: Control<T>
   label?: string
 }
+
+export type LoginRequest = {
+  username: string
+  password: string
+}
+
+export type LoginResponse = {
+  token: string
+}

@@ -1,5 +1,8 @@
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
+import { useLoginMutation } from '@/services/auth'
 import ControlledInput from '@/components/ControlledInput'
 import Section from '@/components/Section'
 import Form from '@/components/Form'
@@ -16,12 +19,26 @@ const INITIAL_VALUES = {
 }
 
 const Login = () => {
+  const router = useRouter()
+  const [authLogin] = useLoginMutation()
+  const [isLoading, setIsLoading] = useState(false)
+
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
   })
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<FormInputs> = async (inputs) => {
+    try {
+      setIsLoading(true)
+      const { token } = await authLogin(inputs).unwrap()
+      if (token) {
+        await router.push('/')
+        setIsLoading(false)
+      }
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error)
+    }
   }
 
   return (
@@ -35,7 +52,7 @@ const Login = () => {
           label='Password:'
         />
       </Form>
-      <Button />
+      <Button isLoading={isLoading} />
     </Section>
   )
 }

@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <main className='mt-10 flex flex-col items-center md:mt-32'>
-      <h1 className='mb-4 text-3xl font-semibold text-blue-700 lg:mb-8 lg:text-5xl'>
+      <h1 className='mb-4 text-center text-3xl font-semibold text-blue-700 lg:mb-8 lg:text-5xl'>
         Simply Your Todos. Woohoo!
       </h1>
       <p className='mb-5 px-4 text-justify text-lg md:w-[600px] lg:mb-8 lg:w-[700px] lg:text-xl'>
