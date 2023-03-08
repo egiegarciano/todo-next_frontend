@@ -2,11 +2,14 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'react-redux'
 
-import { store } from '@/store/store'
+import { wrapper } from '@/redux/store'
+import Toast from '@/components/Toast'
 import NavBar from '@/components/NavBar'
 import '@/styles/globals.css'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, ...rest }: AppProps) {
+  const { store, props } = wrapper.useWrappedStore(rest)
+
   return (
     <div className='min-h-screen'>
       <Head>
@@ -20,7 +23,8 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Provider store={store}>
         <NavBar />
-        <Component {...pageProps} />
+        <Component {...props.pageProps} />
+        <Toast />
       </Provider>
     </div>
   )
