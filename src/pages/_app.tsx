@@ -1,8 +1,10 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
-import { wrapper } from '@/redux/store'
+import { wrapper, persistor } from '@/redux/store'
+
 import Toast from '@/components/Toast'
 import NavBar from '@/components/NavBar'
 import '@/styles/globals.css'
@@ -22,9 +24,11 @@ export default function App({ Component, ...rest }: AppProps) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Provider store={store}>
-        <NavBar />
-        <Component {...props.pageProps} />
-        <Toast />
+        <PersistGate loading={null} persistor={persistor}>
+          <NavBar />
+          <Component {...props.pageProps} />
+          <Toast />
+        </PersistGate>
       </Provider>
     </div>
   )

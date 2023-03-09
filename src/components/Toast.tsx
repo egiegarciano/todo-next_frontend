@@ -17,13 +17,9 @@ const getIcon = (type: string) => {
 }
 
 const Toast = ({ ...rest }: Props) => {
-  const {
-    isShow,
-    text,
-    icon,
-    duration = 3,
-    customStyle,
-  } = useAppSelector((state) => state.toast)
+  const toast = useAppSelector((state) => state.toast)
+  const { isShow, text, icon, duration = 3, customStyle } = toast
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {

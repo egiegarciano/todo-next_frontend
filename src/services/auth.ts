@@ -1,5 +1,5 @@
 import { baseApi } from './base'
-import { LoginRequest, LoginResponse } from '@/types/auth'
+import { LoginRequest, LoginResponse, LogoutResponse } from '@/types/auth'
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,7 +10,17 @@ export const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    logout: builder.mutation<LogoutResponse, string>({
+      query: (token) => ({
+        url: 'auth/logout/',
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }),
+    }),
   }),
+  // overrideExisting: false,
 })
 
-export const { useLoginMutation } = authApi
+export const { useLoginMutation, useLogoutMutation } = authApi

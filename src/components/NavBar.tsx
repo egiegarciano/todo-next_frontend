@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
+import { useLogoutMutation } from '@/services/auth'
+import { useAppDispatch, useAppSelector } from '@/redux/store'
+import { setToken } from '@/redux/auth/slice'
+
 import Clipboard from './icons/Clipboard'
 import Bars3 from './icons/Bars3'
 import { verifiedLinks } from '@/constants/linksData'
 import { unverifiedLinks } from '@/constants/linksData'
 
 const NavBar = () => {
+  const dispatch = useAppDispatch()
+  const [authLogout] = useLogoutMutation()
   const [isOpen, setIsOpen] = useState(false)
+
+  const { token } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
     window.onresize = () => {
@@ -30,6 +38,17 @@ const NavBar = () => {
       document.body.classList.add('overflow-hidden')
     } else {
       document.body.classList.remove('overflow-hidden')
+    }
+  }
+
+  const handleOnLogout = async () => {
+    try {
+      const { message } = await authLogout(token).unwrap()
+      if (message) {
+        dispatch(setToken({ token: '', username: '' }))
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -58,16 +77,34 @@ const NavBar = () => {
           isOpen ? 'flex' : 'hidden lg:flex'
         }`}
       >
-        {verifiedLinks.map((item) => (
-          <Link key={item.name} href={item.href} onClick={handleOnCloseMenu}>
-            {item.name}
-          </Link>
-        ))}
-        {unverifiedLinks.map((item) => (
-          <Link key={item.name} href={item.href} onClick={handleOnCloseMenu}>
-            {item.name}
-          </Link>
-        ))}
+        {token ? (
+          <>
+            {verifiedLinks.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={handleOnCloseMenu}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <div className='cursor-pointer' onClick={handleOnLogout}>
+              Logout
+            </div>
+          </>
+        ) : (
+          <>
+            {unverifiedLinks.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={handleOnCloseMenu}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </>
+        )}
       </div>
     </nav>
   )

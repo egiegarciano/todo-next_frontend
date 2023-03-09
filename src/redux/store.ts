@@ -1,14 +1,37 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 import { createWrapper } from 'next-redux-wrapper'
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 import { baseApi } from '@/services/base'
 import rootReducer from './reducer'
 
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth'],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(baseApi.middleware),
 })
 
 const makeStore = () => store
@@ -21,3 +44,4 @@ export const useAppSelector: TypedUseSelectorHook<
 > = useSelector
 
 export const wrapper = createWrapper<AppStore>(makeStore)
+export const persistor = persistStore(store)

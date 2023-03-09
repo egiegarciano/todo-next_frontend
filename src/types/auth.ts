@@ -6,3 +6,12 @@ export type LoginRequest = {
 export type LoginResponse = {
   token: string
 }
+
+export type LogoutResponse = {
+  message: string
+}
+
+export type Token = {
+  username: string
+  token: string
+}

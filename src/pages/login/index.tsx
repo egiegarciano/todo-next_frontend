@@ -3,13 +3,14 @@ import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { useLoginMutation } from '@/services/auth'
+import { useAppDispatch } from '@/redux/store'
+import { showToast } from '@/redux/toast/slice'
+import { setToken } from '@/redux/auth/slice'
+
 import ControlledInput from '@/components/ControlledInput'
 import Section from '@/components/Section'
 import Form from '@/components/Form'
 import Button from '@/components/Button'
-
-import { useAppDispatch, useAppSelector } from '@/redux/store'
-import { showToast } from '@/redux/toast/slice'
 
 type FormInputs = {
   username: string
@@ -27,8 +28,6 @@ const Login = () => {
   const [authLogin] = useLoginMutation()
   const [isLoading, setIsLoading] = useState(false)
 
-  const toast = useAppSelector((state) => state.toast)
-
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
   })
@@ -39,6 +38,12 @@ const Login = () => {
       const { token } = await authLogin(inputs).unwrap()
       if (token) {
         await router.push('/')
+        dispatch(
+          setToken({
+            token: token,
+            username: inputs.username,
+          })
+        )
         setIsLoading(false)
       }
     } catch (error: any) {
