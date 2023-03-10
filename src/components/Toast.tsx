@@ -13,14 +13,13 @@ const getIcon = (type: string) => {
     success: <CheckCircle />,
     error: <ExclamationCircle />,
   }
-  return icons[type]
+  return icons[type] ?? ''
 }
 
 const Toast = ({ ...rest }: Props) => {
+  const dispatch = useAppDispatch()
   const toast = useAppSelector((state) => state.toast)
   const { isShow, text, icon, duration = 3, customStyle } = toast
-
-  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (isShow) {
@@ -31,13 +30,14 @@ const Toast = ({ ...rest }: Props) => {
   }, [dispatch, duration, isShow])
 
   return (
-    <div className={`bg-black ${customStyle}`} {...rest}>
-      {isShow && (
-        <>
-          {getIcon(icon!)}
-          {text}
-        </>
-      )}
+    <div
+      className={`absolute bottom-28 right-14 items-center gap-2 rounded-md bg-gray-400 px-3 py-2 text-sm font-bold text-black md:text-base ${
+        isShow ? 'flex' : 'hidden'
+      } ${customStyle}`}
+      {...rest}
+    >
+      {getIcon(icon!)}
+      <p>{text}</p>
     </div>
   )
 }

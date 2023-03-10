@@ -13,7 +13,7 @@ export default function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest)
 
   return (
-    <div className='min-h-screen'>
+    <div className='relative min-h-screen'>
       <Head>
         <title>Todo Wohoo</title>
         <meta

@@ -46,6 +46,8 @@ const NavBar = () => {
       const { message } = await authLogout(token).unwrap()
       if (message) {
         dispatch(setToken({ token: '', username: '' }))
+        setIsOpen(false)
+        document.body.classList.remove('overflow-hidden')
       }
     } catch (error) {
       console.log(error)
