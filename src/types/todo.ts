@@ -33,3 +33,8 @@ export type CurrentTodosResponse = {
   page: number
   results: ResultPaginate[]
 }
+
+export type CurrentTodosRequest = {
+  token: string
+  page?: number
+}

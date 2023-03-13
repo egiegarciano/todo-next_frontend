@@ -5,10 +5,11 @@ import { useLogoutMutation } from '@/services/auth'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { setToken } from '@/redux/auth/slice'
 
-import Clipboard from './icons/Clipboard'
-import Bars3 from './icons/Bars3'
 import { verifiedLinks } from '@/constants/linksData'
 import { unverifiedLinks } from '@/constants/linksData'
+import Clipboard from './icons/Clipboard'
+import Bars3 from './icons/Bars3'
+import XMark from './icons/XMark'
 
 const NavBar = () => {
   const dispatch = useAppDispatch()
@@ -71,7 +72,7 @@ const NavBar = () => {
           className='rounded-md border px-2 py-1 lg:hidden'
           onClick={handleToggleMenu}
         >
-          <Bars3 />
+          {isOpen ? <XMark /> : <Bars3 />}
         </div>
       </div>
       <div

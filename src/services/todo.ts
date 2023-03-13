@@ -3,6 +3,7 @@ import {
   CreateTodoRequest,
   CreateTodoResponse,
   CurrentTodosResponse,
+  CurrentTodosRequest,
 } from '@/types/todo'
 
 export const todoApi = baseApi.injectEndpoints({
@@ -14,9 +15,9 @@ export const todoApi = baseApi.injectEndpoints({
         body: rest,
       }),
     }),
-    currentTodos: builder.query<CurrentTodosResponse, string>({
-      query: (token) => ({
-        url: `todo/current-todos/${token}/`,
+    currentTodos: builder.query<CurrentTodosResponse, CurrentTodosRequest>({
+      query: ({ token, page }) => ({
+        url: `todo/current-todos/${token}/?page=${page ?? 1}`,
         method: 'GET',
       }),
     }),
