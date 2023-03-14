@@ -5,17 +5,7 @@ export type CreateTodoRequest = {
   is_important: boolean
 }
 
-export type CreateTodoResponse = {
-  id: number
-  user: number
-  name: string
-  memo: string
-  created_at: string
-  completed_at: string | null
-  is_important: boolean
-}
-
-type ResultPaginate = {
+export type TodoResponse = {
   id: number
   user: number
   name: string
@@ -31,10 +21,23 @@ export type CurrentTodosResponse = {
   total_items: number
   total_pages: number
   page: number
-  results: ResultPaginate[]
+  results: TodoResponse[]
 }
 
 export type CurrentTodosRequest = {
   token: string
   page?: number
 }
+
+export type TodoDetailRequest = {
+  token: string
+  id: number
+}
+
+export type UpdateTodoRequest = {
+  id: number
+} & CreateTodoRequest
+
+export type CompleteTodoRequest = {
+  completed_at: string
+} & TodoDetailRequest

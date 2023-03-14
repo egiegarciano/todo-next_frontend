@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from 'react'
 
-import ChevronDoubleLeft from './icons/ChevronDoubleLeft'
+import ChevronDoubleRight from './icons/ChevronDoubleRight'
 
 type Props = {
   currentPage: number
@@ -8,24 +8,24 @@ type Props = {
   onChangePage: (e: any) => void
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-const PaginationStartButton = (props: Props) => {
+const PaginationEndButton = (props: Props) => {
   const { currentPage, totalPages, onChangePage, ...rest } = props
 
   const handleClick = () => {
-    if (currentPage === 1) return
-    onChangePage({ selected: 0 })
+    if (currentPage === totalPages) return
+    onChangePage({ selected: totalPages - 1 })
   }
 
   return (
     <button
       onClick={handleClick}
       className='text-blue-700 disabled:cursor-not-allowed disabled:text-gray-600'
-      disabled={currentPage === 1}
+      disabled={currentPage === totalPages}
       {...rest}
     >
-      <ChevronDoubleLeft />
+      <ChevronDoubleRight />
     </button>
   )
 }
 
-export default PaginationStartButton
+export default PaginationEndButton

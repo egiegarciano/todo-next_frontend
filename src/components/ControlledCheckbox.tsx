@@ -7,8 +7,9 @@ type Props<T extends FieldValues> = ControlledProps<T> &
   InputHTMLAttributes<HTMLInputElement>
 
 const ControlledCheckbox = <T extends FieldValues>(props: Props<T>) => {
-  const { name, control, label, ...rest } = props
+  const { name, control, label, ...restProps } = props
   const { field, fieldState } = useController({ name, control })
+  const { value, ...restField } = field
   const { error } = fieldState
 
   return (
@@ -16,11 +17,12 @@ const ControlledCheckbox = <T extends FieldValues>(props: Props<T>) => {
       {error?.message && <div>{error.message}</div>}
       <label htmlFor={name}>{label}</label>
       <input
-        {...field}
+        {...restField}
+        checked={value ?? false}
         id={name}
         type='checkbox'
         className='rounded-md py-1 px-2'
-        {...rest}
+        {...restProps}
       />
     </div>
   )
