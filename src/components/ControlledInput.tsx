@@ -1,10 +1,12 @@
 import React, { InputHTMLAttributes } from 'react'
-import { FieldValues, useController } from 'react-hook-form'
+import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
 
 import { ControlledProps } from '@/types/form'
 
-type Props<T extends FieldValues> = { type?: string } & ControlledProps<T> &
-  InputHTMLAttributes<HTMLInputElement>
+type Props<T extends FieldValues> = UseControllerProps<T> &
+  InputHTMLAttributes<HTMLInputElement> & {
+    label: string
+  }
 
 const ControlledInput = <T extends FieldValues>(props: Props<T>) => {
   const { name, control, label, type = 'text', ...rest } = props

@@ -15,7 +15,7 @@ export type TodoResponse = {
   is_important: boolean
 }
 
-export type CurrentTodosResponse = {
+export type TodoListResponse = {
   next: string | null
   user: string | null
   total_items: number
@@ -24,7 +24,7 @@ export type CurrentTodosResponse = {
   results: TodoResponse[]
 }
 
-export type CurrentTodosRequest = {
+export type TodoListRequest = {
   token: string
   page?: number
 }

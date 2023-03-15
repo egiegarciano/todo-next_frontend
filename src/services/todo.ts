@@ -1,8 +1,8 @@
 import { baseApi } from './base'
 import {
   CreateTodoRequest,
-  CurrentTodosResponse,
-  CurrentTodosRequest,
+  TodoListResponse,
+  TodoListRequest,
   TodoDetailRequest,
   TodoResponse,
   UpdateTodoRequest,
@@ -18,7 +18,7 @@ export const todoApi = baseApi.injectEndpoints({
         body: rest,
       }),
     }),
-    currentTodos: builder.query<CurrentTodosResponse, CurrentTodosRequest>({
+    currentTodos: builder.query<TodoListResponse, TodoListRequest>({
       query: ({ token, page }) => ({
         url: `todo/current-todos/${token}/?page=${page ?? 1}`,
         method: 'GET',
@@ -50,6 +50,12 @@ export const todoApi = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
     }),
+    completedTodos: builder.query<TodoListResponse, TodoListRequest>({
+      query: ({ token, page }) => ({
+        url: `todo/completed-todos/${token}/?page=${page ?? 1}`,
+        method: 'GET',
+      }),
+    }),
   }),
 
   // overrideExisting: false,
@@ -62,4 +68,5 @@ export const {
   useUpdateTodoMutation,
   useCompleteTodoMutation,
   useDeleteTodoMutation,
+  useCompletedTodosQuery,
 } = todoApi

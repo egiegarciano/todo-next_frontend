@@ -14,7 +14,7 @@ export const verifiedLinks: Link[] = [
   },
   {
     name: 'Completed',
-    href: '/completed',
+    href: '/completed-todo',
   },
 ]
 
