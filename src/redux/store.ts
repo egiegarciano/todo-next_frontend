@@ -24,7 +24,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-const store = configureStore({
+export const setupStore = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -34,14 +34,15 @@ const store = configureStore({
     }).concat(baseApi.middleware),
 })
 
-const makeStore = () => store
+const makeStore = () => setupStore
 
-export type AppStore = ReturnType<typeof makeStore>
+export type RootState = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<() => typeof setupStore>
 
-export const useAppDispatch: () => typeof store.dispatch = useDispatch
+export const useAppDispatch: () => typeof setupStore.dispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<
-  ReturnType<typeof store.getState>
+  ReturnType<typeof setupStore.getState>
 > = useSelector
 
-export const wrapper = createWrapper<AppStore>(makeStore)
-export const persistor = persistStore(store)
+export const wrapper = createWrapper<ReturnType<typeof makeStore>>(makeStore)
+export const persistor = persistStore(setupStore)
