@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import { render, screen, waitFor, cleanup } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { setToken } from '@/redux/auth/slice'
 import { setupStore } from '@/redux/store'
@@ -7,11 +8,11 @@ import NavBar from '../components/NavBar'
 import { renderWithProviders } from '@/utils/redux-test-utils'
 import Clipboard from '@/components/icons/Clipboard'
 
+beforeEach(() => renderWithProviders(<NavBar />))
+
+afterEach(() => cleanup)
+
 describe('NavBar Component', () => {
-  beforeEach(() => renderWithProviders(<NavBar />))
-
-  afterEach(() => cleanup())
-
   it('renders nav bar', () => {
     const navBar = screen.getByRole('navigation')
     expect(navBar).toBeInTheDocument()
@@ -57,9 +58,10 @@ describe('NavBar Component', () => {
 
   describe('displays the links of authenticated user', () => {
     it('renders a current link text', async () => {
+      const store = setupStore
+
       await waitFor(() => {
-        const store = setupStore
-        store.dispatch(setToken({ token: 'authToken', username: 'JohnDoe' }))
+        store.dispatch(setToken({ token: 'thisIsAToken', username: 'JohnDoe' }))
       })
 
       const currentLink = screen.getByRole('link', {
@@ -78,22 +80,23 @@ describe('NavBar Component', () => {
 
   describe('will able to logut user', () => {
     it('renders a current link text', async () => {
-      await waitFor(() => {
-        const store = setupStore
-        store.dispatch(setToken({ token: 'authToken', username: 'JohnDoe' }))
-      })
+      const store = setupStore.getState().auth.token
+      console.log('🚀 ~ file: navbar.test.tsx:85 ~ it ~ store:', store)
 
-      const currentLink = screen.getByRole('link', {
-        name: /current/i,
-      })
+      const user = userEvent.setup()
 
-      const signUpLink = screen.queryByRole('link', {
+      const logoutLink = screen.getByText('Logout')
+
+      await user.click(logoutLink)
+
+      const signUpLink = screen.getByRole('link', {
         name: /sign up/i,
       })
 
-      expect(currentLink).toHaveAttribute('href', '/current-todo')
-      expect(currentLink).toBeInTheDocument()
-      expect(signUpLink).not.toBeInTheDocument
+      expect(signUpLink).toHaveTextContent('Sign Up')
+      expect(signUpLink).toBeInTheDocument()
+
+      expect(logoutLink).not.toBeInTheDocument()
     })
   })
 })
