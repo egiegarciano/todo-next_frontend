@@ -9,4 +9,16 @@ export const handlers = [
       ctx.status(200)
     )
   }),
+
+  rest.post('http://localhost:8000/auth/register/', async (req, res, ctx) => {
+    return res(
+      ctx.json({
+        response: 'Successfully registered',
+        username: 'John Doe',
+        email: 'johndoe@test.com',
+        token: 'authToken123',
+      }),
+      ctx.status(200)
+    )
+  }),
 ]
