@@ -9,6 +9,7 @@ import { baseApi } from '@/services/base'
 import AuthReducer from '../redux/auth/slice'
 import SignUp from '@/pages/sign-up'
 import { Provider } from 'react-redux'
+import { setupRegisterErrorHandler } from '@/mocks/errorHandlers'
 
 beforeEach(() => renderWithProviders(<SignUp />))
 
@@ -101,5 +102,37 @@ describe('Sign Up Page', () => {
     const { isSuccess } = result.current[1]
 
     expect(isSuccess).toBeTruthy()
+  })
+})
+
+describe('Handling register error', () => {
+  beforeEach(() => setupRegisterErrorHandler())
+
+  it('will handle error', async () => {
+    const data = {
+      username: 'John Doe',
+      email: 'johndoe@test.com',
+      password: 'Password',
+      password2: 'Password',
+    }
+
+    const { result } = renderHook(() => useRegisterMutation(), {
+      wrapper,
+    })
+
+    const [authRegister] = result.current
+
+    await act(async () => {
+      try {
+        const res = await authRegister(data).unwrap()
+        expect(res).toBeCalled()
+      } catch (error: any) {
+        expect(error.status).toEqual(400)
+        expect(error.data).toEqual(null)
+      }
+    })
+
+    const { isSuccess } = result.current[1]
+    expect(isSuccess).toBeFalsy()
   })
 })

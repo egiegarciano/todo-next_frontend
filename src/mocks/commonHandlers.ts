@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 
-export const handlers = [
+export const commonHandlers = [
   rest.post('http://localhost:8000/auth/logout/', async (req, res, ctx) => {
     return res(
       ctx.json({
