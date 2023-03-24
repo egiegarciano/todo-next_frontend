@@ -42,7 +42,7 @@ export function setupApiStore<
     util: { resetApiState(): any }
   },
   R extends Record<string, Reducer<any, any>> = Record<never, never>
->(api: A, extraReducers?: R): { api: any; store: EnhancedStore } {
+>(api: A, extraReducers?: R) {
   /*
    * Modified version of RTK Query's helper function:
    * https://github.com/reduxjs/redux-toolkit/blob/master/packages/toolkit/src/query/tests/helpers.tsx
@@ -72,12 +72,24 @@ export function setupApiStore<
   >
 
   const initialStore = getStore() as StoreType
+  const wrapper = ({ children }: PropsWithChildren<{}>) => {
+    return <Provider store={initialStore}>{children}</Provider>
+  }
+
   const refObj = {
     api,
     store: initialStore,
+    wrapper,
   }
-  const store = getStore() as StoreType
-  refObj.store = store
+
+  beforeEach(() => {
+    const store = getStore() as StoreType
+    refObj.store = store
+    refObj.api = api
+    refObj.wrapper = ({ children }: PropsWithChildren<{}>) => {
+      return <Provider store={store}>{children}</Provider>
+    }
+  })
 
   return refObj
 }

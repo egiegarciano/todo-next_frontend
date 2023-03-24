@@ -58,10 +58,10 @@ describe('NavBar Component', () => {
 
   describe('displays the links of authenticated user', () => {
     it('renders a current link text', async () => {
-      const store = setupStore
-
       await waitFor(() => {
-        store.dispatch(setToken({ token: 'thisIsAToken', username: 'JohnDoe' }))
+        setupStore.dispatch(
+          setToken({ token: 'thisIsAToken', username: 'JohnDoe' })
+        )
       })
 
       const currentLink = screen.getByRole('link', {
@@ -80,14 +80,13 @@ describe('NavBar Component', () => {
 
   describe('will able to logut user', () => {
     it('renders a current link text', async () => {
-      const store = setupStore.getState().auth.token
-      console.log('🚀 ~ file: navbar.test.tsx:85 ~ it ~ store:', store)
-
       const user = userEvent.setup()
 
       const logoutLink = screen.getByText('Logout')
 
       await user.click(logoutLink)
+
+      const token = setupStore.getState().auth.token
 
       const signUpLink = screen.getByRole('link', {
         name: /sign up/i,
@@ -95,8 +94,8 @@ describe('NavBar Component', () => {
 
       expect(signUpLink).toHaveTextContent('Sign Up')
       expect(signUpLink).toBeInTheDocument()
-
       expect(logoutLink).not.toBeInTheDocument()
+      expect(token).toEqual('')
     })
   })
 })

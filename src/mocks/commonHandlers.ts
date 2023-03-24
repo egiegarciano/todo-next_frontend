@@ -21,4 +21,13 @@ export const commonHandlers = [
       ctx.status(200)
     )
   }),
+
+  rest.post('http://localhost:8000/auth/login/', async (req, res, ctx) => {
+    return res(
+      ctx.json({
+        token: 'authToken143',
+      }),
+      ctx.status(200)
+    )
+  }),
 ]
