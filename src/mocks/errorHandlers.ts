@@ -22,3 +22,14 @@ export const setupLoginErrorHandler = () => {
     })
   )
 }
+
+export const setupCreateTodoErrorHandler = () => {
+  server.use(
+    rest.post(
+      'http://localhost:8000/todo/sampleToken123/create-todo/',
+      async (req, res, ctx) => {
+        return res(ctx.json(null), ctx.status(400))
+      }
+    )
+  )
+}

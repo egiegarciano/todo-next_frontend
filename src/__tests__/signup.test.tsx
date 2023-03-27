@@ -1,4 +1,5 @@
 import 'whatwg-fetch'
+import { useRouter } from 'next/router'
 import userEvent from '@testing-library/user-event'
 import { screen, renderHook, waitFor, render } from '@testing-library/react'
 
@@ -11,8 +12,8 @@ import { setupRegisterErrorHandler } from '@/mocks/errorHandlers'
 
 jest.mock('next/router', () => {
   return {
-    useRouter: () => ({
-      push: jest.fn(() => Promise.resolve(true)),
+    useRouter: jest.fn().mockReturnValue({
+      push: jest.fn(),
     }),
   }
 })
@@ -73,6 +74,11 @@ describe('Sign Up Page', () => {
       password2: 'Password',
     }
 
+    const mockRouter = {
+      push: jest.fn(),
+    }
+    ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
+
     const { result } = renderHook(() => useRegisterMutation(), {
       wrapper: storeRef.wrapper,
     })
@@ -87,6 +93,9 @@ describe('Sign Up Page', () => {
 
     await waitFor(async () => {
       await user.click(submitBtn)
+
+      expect(mockRouter.push).toHaveBeenCalledWith('/')
+
       const { response, token } = await authRegister(data).unwrap()
 
       expect(response).toEqual('Successfully registered')
@@ -94,9 +103,11 @@ describe('Sign Up Page', () => {
     })
 
     const { isSuccess } = result.current[1]
-    const { username, token } = storeRef.store.getState().auth
 
     expect(isSuccess).toBeTruthy()
+
+    const { username, token } = storeRef.store.getState().auth
+
     expect(token).toEqual('authToken123')
     expect(username).toEqual('John Doe')
   })
@@ -130,6 +141,7 @@ describe('Handling register error', () => {
     })
 
     const { isSuccess } = result.current[1]
+
     expect(isSuccess).toBeFalsy()
 
     const token = storeRef.store.getState().auth.token

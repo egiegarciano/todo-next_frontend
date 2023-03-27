@@ -30,4 +30,22 @@ export const commonHandlers = [
       ctx.status(200)
     )
   }),
+
+  rest.post(
+    'http://localhost:8000/todo/sampleToken123/create-todo/',
+    async (req, res, ctx) => {
+      return res(
+        ctx.json({
+          id: 1,
+          user: 1,
+          name: 'Todo name',
+          memo: 'This is a sample todo',
+          created_at: 'dateCreated',
+          completed_at: null,
+          is_important: false,
+        }),
+        ctx.status(200)
+      )
+    }
+  ),
 ]
