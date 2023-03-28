@@ -48,6 +48,7 @@ const NavBar = () => {
       if (message) {
         dispatch(setToken({ token: '', username: '' }))
         setIsOpen(false)
+        // redirect to signup page after logout
         document.body.classList.remove('overflow-hidden')
       }
     } catch (error) {

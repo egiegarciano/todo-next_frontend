@@ -18,6 +18,7 @@ const PaginationStartButton = (props: Props) => {
 
   return (
     <button
+      aria-label='start page'
       onClick={handleClick}
       className='text-blue-700 disabled:cursor-not-allowed disabled:text-gray-600'
       disabled={currentPage === 1}

@@ -17,7 +17,7 @@ export type TodoResponse = {
 
 export type TodoListResponse = {
   next: string | null
-  user: string | null
+  previous: string | null
   total_items: number
   total_pages: number
   page: number

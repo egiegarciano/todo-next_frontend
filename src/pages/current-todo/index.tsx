@@ -22,7 +22,7 @@ const CurrentTodo = () => {
 
   return (
     <Section title='Current Todos' className='mb-32 lg:pb-20'>
-      {data?.results ? (
+      {data?.results.length ? (
         <>
           {isLoading ? (
             <div>Loading...</div>
@@ -46,7 +46,12 @@ const CurrentTodo = () => {
           )}
         </>
       ) : (
-        <div>No current todo yet</div>
+        <>
+          <p>No current todo yet</p>
+          <Link href='create-todo/' className='text-blue-700'>
+            Create todo here
+          </Link>
+        </>
       )}
     </Section>
   )

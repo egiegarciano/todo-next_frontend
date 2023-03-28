@@ -18,6 +18,7 @@ const PaginationEndButton = (props: Props) => {
 
   return (
     <button
+      aria-label='end page'
       onClick={handleClick}
       className='text-blue-700 disabled:cursor-not-allowed disabled:text-gray-600'
       disabled={currentPage === totalPages}
