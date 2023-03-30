@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
-import { render, screen, waitFor, cleanup } from '@testing-library/react'
+import { useRouter } from 'next/router'
+import { screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { setToken } from '@/redux/auth/slice'
@@ -11,6 +12,14 @@ import Clipboard from '@/components/icons/Clipboard'
 beforeEach(() => renderWithProviders(<NavBar />))
 
 afterEach(() => cleanup)
+
+jest.mock('next/router', () => {
+  return {
+    useRouter: jest.fn().mockReturnValue({
+      push: jest.fn(),
+    }),
+  }
+})
 
 describe('NavBar Component', () => {
   it('renders nav bar', () => {
@@ -88,7 +97,7 @@ describe('NavBar Component', () => {
 
       const token = setupStore.getState().auth.token
 
-      const signUpLink = screen.getByRole('link', {
+      const signUpLink = await screen.findByRole('link', {
         name: /sign up/i,
       })
 

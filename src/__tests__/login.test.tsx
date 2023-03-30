@@ -109,6 +109,7 @@ describe('Handling login error', () => {
       try {
         await authLogin(data).unwrap()
         // I think its okay also to put her user.click(button) instead of the hook
+        // since we only want the error
       } catch (error: any) {
         expect(error.status).toEqual(400)
         expect(error.data).toEqual(null)

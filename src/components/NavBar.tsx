@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { useLogoutMutation } from '@/services/auth'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
@@ -12,6 +13,7 @@ import Bars3 from './icons/Bars3'
 import XMark from './icons/XMark'
 
 const NavBar = () => {
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const [authLogout] = useLogoutMutation()
   const [isOpen, setIsOpen] = useState(false)
@@ -46,9 +48,9 @@ const NavBar = () => {
     try {
       const { message } = await authLogout(token).unwrap()
       if (message) {
+        router.push('/login')
         dispatch(setToken({ token: '', username: '' }))
         setIsOpen(false)
-        // redirect to signup page after logout
         document.body.classList.remove('overflow-hidden')
       }
     } catch (error) {

@@ -24,6 +24,8 @@ export type LoginRequest = {
 
 export type LoginResponse = {
   token: string
+  email: string
+  user_id: number
 }
 
 export type LogoutResponse = {

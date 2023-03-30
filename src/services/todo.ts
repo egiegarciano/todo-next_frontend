@@ -20,8 +20,11 @@ export const todoApi = baseApi.injectEndpoints({
     }),
     currentTodos: builder.query<TodoListResponse, TodoListRequest>({
       query: ({ token, page }) => ({
-        url: `todo/current-todos/${token}/?page=${page ?? 1}`,
+        url: `todo/current-todos/?page=${page ?? 1}`,
         method: 'GET',
+        headers: {
+          Authorization: `Token ${token}`,
+        },
       }),
     }),
     todoDetail: builder.query<TodoResponse, TodoDetailRequest>({
