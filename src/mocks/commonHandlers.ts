@@ -14,8 +14,8 @@ export const commonHandlers = [
     return res(
       ctx.json({
         response: 'Successfully registered',
-        username: 'John Doe',
-        email: 'johndoe@test.com',
+        username: 'johndoe123',
+        email: 'johndoe123@test.com',
         token: 'authToken123',
       }),
       ctx.status(200)

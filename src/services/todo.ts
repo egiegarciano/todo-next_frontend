@@ -60,8 +60,7 @@ export const todoApi = baseApi.injectEndpoints({
       }),
     }),
   }),
-
-  // overrideExisting: false,
+  overrideExisting: true,
 })
 
 export const {

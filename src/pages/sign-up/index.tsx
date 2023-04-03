@@ -1,23 +1,21 @@
 import { useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
 import { useRouter } from 'next/router'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { InferType } from 'yup'
 
 import { useRegisterMutation } from '@/services/auth'
 import { useAppDispatch } from '@/redux/store'
 import { setToken } from '@/redux/auth/slice'
 import { showToast } from '@/redux/toast/slice'
+import { signupSchema } from '@/validators/signupValidator'
 
 import ControlledInput from '@/components/ControlledInput'
 import Section from '@/components/Section'
 import Form from '@/components/Form'
 import Button from '@/components/Button'
 
-type FormInputs = {
-  username: string
-  email: string
-  password: string
-  password2: string
-}
+type FormInputs = InferType<typeof signupSchema>
 
 const INITIAL_VALUES = {
   username: '',
@@ -34,6 +32,8 @@ const SignUp = () => {
 
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
+    resolver: yupResolver(signupSchema),
+    mode: 'onChange',
   })
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {

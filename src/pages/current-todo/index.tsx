@@ -32,7 +32,9 @@ const CurrentTodo = () => {
                 <Link
                   href={`/current-todo/${item.id}`}
                   key={item.id}
-                  className='truncate rounded-md bg-white px-3 py-2 text-base'
+                  className={`truncate rounded-md px-3 py-2 text-base ${
+                    item.is_important ? 'bg-red-200' : 'bg-white'
+                  }`}
                 >
                   {item.name}
                 </Link>

@@ -48,7 +48,7 @@ const NavBar = () => {
     try {
       const { message } = await authLogout(token).unwrap()
       if (message) {
-        router.push('/login')
+        await router.push('/login')
         dispatch(setToken({ token: '', username: '' }))
         setIsOpen(false)
         document.body.classList.remove('overflow-hidden')
@@ -61,16 +61,14 @@ const NavBar = () => {
   return (
     <nav className='relative bg-blue-500 px-4 py-2 text-white lg:px-24 xl:px-72'>
       <div className='flex items-center justify-between'>
-        <div className='flex items-center space-x-2'>
+        <Link
+          href='/'
+          onClick={handleOnCloseMenu}
+          className='relative z-50 flex items-center space-x-2 text-lg font-semibold'
+        >
           <Clipboard />
-          <Link
-            href='/'
-            onClick={handleOnCloseMenu}
-            className='text-lg font-semibold'
-          >
-            Todo Wohoo
-          </Link>
-        </div>
+          <p>Todo Wohoo</p>
+        </Link>
         <div
           className='rounded-md border px-2 py-1 lg:hidden'
           onClick={handleToggleMenu}
@@ -79,38 +77,40 @@ const NavBar = () => {
         </div>
       </div>
       <div
-        className={`absolute top-[52px] right-0 z-20 h-screen w-[270px] flex-col space-y-4 overflow-hidden bg-blue-400 p-6 text-base font-semibold tracking-wider lg:top-0 lg:h-auto lg:w-auto lg:flex-row lg:space-y-0 lg:space-x-4 lg:bg-transparent lg:py-[14px] lg:px-24 xl:px-72 ${
+        className={`absolute inset-0 top-[52px] z-20 flex h-screen w-full justify-end overflow-hidden bg-[#3b3b3b5b] lg:top-0 lg:h-auto lg:bg-transparent ${
           isOpen ? 'flex' : 'hidden lg:flex'
         }`}
       >
-        {token ? (
-          <>
-            {verifiedLinks.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={handleOnCloseMenu}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <div className='cursor-pointer' onClick={handleOnLogout}>
-              Logout
-            </div>
-          </>
-        ) : (
-          <>
-            {unverifiedLinks.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={handleOnCloseMenu}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </>
-        )}
+        <div className='flex w-[270px] flex-col space-y-4 bg-blue-400 p-6 text-base font-semibold tracking-wider lg:w-auto lg:flex-row lg:space-y-0 lg:space-x-8 lg:bg-transparent lg:py-[14px] lg:px-24 xl:px-72'>
+          {token ? (
+            <>
+              {verifiedLinks.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={handleOnCloseMenu}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <div className='cursor-pointer' onClick={handleOnLogout}>
+                Logout
+              </div>
+            </>
+          ) : (
+            <>
+              {unverifiedLinks.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={handleOnCloseMenu}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </>
+          )}
+        </div>
       </div>
     </nav>
   )

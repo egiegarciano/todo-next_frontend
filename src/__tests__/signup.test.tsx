@@ -67,6 +67,8 @@ describe('Sign Up Page', () => {
   })
 
   it('will submit the form successfully', async () => {
+    const user = userEvent.setup()
+
     const data = {
       username: 'John Doe',
       email: 'johndoe@test.com',
@@ -85,7 +87,19 @@ describe('Sign Up Page', () => {
 
     const [authRegister] = result.current
 
-    const user = userEvent.setup()
+    const usernameInput = screen.getByRole('textbox', {
+      name: /username:/i,
+    })
+    const emailInput = screen.getByRole('textbox', {
+      name: /email:/i,
+    })
+    const passwordInput = screen.getByLabelText('Password:')
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password:')
+
+    await user.type(usernameInput, 'johndoe123')
+    await user.type(emailInput, 'johndoe123@test.com')
+    await user.type(passwordInput, 'Password@123')
+    await user.type(confirmPasswordInput, 'Password@123')
 
     const submitBtn = screen.getByRole('button', {
       name: /submit/i,
@@ -109,7 +123,7 @@ describe('Sign Up Page', () => {
     const { username, token } = storeRef.store.getState().auth
 
     expect(token).toEqual('authToken123')
-    expect(username).toEqual('John Doe')
+    expect(username).toEqual('johndoe123')
   })
 })
 
