@@ -32,7 +32,7 @@ export const commonHandlers = [
   }),
 
   rest.post(
-    'http://localhost:8000/todo/sampleToken123/create-todo/',
+    'http://localhost:8000/todo/create-todo/',
     async (req, res, ctx) => {
       return res(
         ctx.json({

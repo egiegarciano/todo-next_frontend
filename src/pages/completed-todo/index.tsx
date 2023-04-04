@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
 
 import { useCompletedTodosQuery } from '@/services/todo'
-import { useAppSelector } from '@/redux/store'
 
 import Section from '@/components/Section'
 import Pagination from '@/components/Pagination'
 
 const CompletedTodo = () => {
-  const token = useAppSelector(({ auth }) => auth.token)
   const [page, setPage] = useState(1)
-  const { data, isLoading, refetch } = useCompletedTodosQuery({ token, page })
+  const { data, isLoading, refetch } = useCompletedTodosQuery(page)
 
   useEffect(() => {
     refetch()
@@ -20,7 +18,7 @@ const CompletedTodo = () => {
   }
 
   return (
-    <Section title='Current Todos' className='mb-32 lg:pb-20'>
+    <Section title='Completed Todos' className='mb-32 lg:pb-20'>
       {data?.results ? (
         <>
           {isLoading ? (

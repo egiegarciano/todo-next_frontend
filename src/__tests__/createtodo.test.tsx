@@ -11,7 +11,9 @@ import { setupCreateTodoErrorHandler } from '@/mocks/errorHandlers'
 
 jest.mock('next/router', () => {
   return {
-    useRouter: jest.fn(),
+    useRouter: jest.fn().mockReturnValue({
+      push: jest.fn(),
+    }),
   }
 })
 

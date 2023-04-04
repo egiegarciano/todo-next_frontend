@@ -9,7 +9,6 @@ import {
   useCompleteTodoMutation,
   useDeleteTodoMutation,
 } from '@/services/todo'
-import { useAppSelector } from '@/redux/store'
 
 import ControlledInput from '@/components/ControlledInput'
 import ControlledTextarea from '@/components/ControlledTextarea'
@@ -34,13 +33,12 @@ const INITIAL_VALUES = {
 const TodoDetail = () => {
   const router = useRouter()
   const id = Number(router.query.id)
-  const token = useAppSelector(({ auth }) => auth.token)
   const [isLoading, setIsLoading] = useState(false)
 
   const [updateTodo] = useUpdateTodoMutation()
   const [completeTodo] = useCompleteTodoMutation()
   const [deleteTodo] = useDeleteTodoMutation()
-  const { data, refetch } = useTodoDetailQuery({ token, id })
+  const { data, refetch } = useTodoDetailQuery(id)
 
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
@@ -50,7 +48,7 @@ const TodoDetail = () => {
   const onUpdateTodo: SubmitHandler<FormInputs> = async (data) => {
     setIsLoading(true)
     try {
-      const res = await updateTodo({ token, id, ...data }).unwrap()
+      const res = await updateTodo({ id, ...data }).unwrap()
       if (res.user) {
         setIsLoading(false)
         refetch()
@@ -65,7 +63,7 @@ const TodoDetail = () => {
     setIsLoading(true)
     try {
       const completed_at = new Date().toISOString()
-      const res = await completeTodo({ token, id, completed_at }).unwrap()
+      const res = await completeTodo({ id, completed_at }).unwrap()
       if (res.user) {
         await router.push('/current-todo')
         setIsLoading(false)
@@ -79,7 +77,7 @@ const TodoDetail = () => {
   const handleOnDeleteTodo = async () => {
     setIsLoading(true)
     try {
-      await deleteTodo({ token, id }).unwrap()
+      await deleteTodo(id).unwrap()
       await router.push('/current-todo')
       setIsLoading(false)
     } catch (error) {

@@ -29,10 +29,10 @@ describe('will display the current-todo page', () => {
   })
 
   it('will render the message when theres no currently todos yet', () => {
-    const message = screen.getByText(/no current todo yet/i)
+    const message = screen.getByText(/you don't have any todos/i)
 
     const link = screen.getByRole('link', {
-      name: /create todo here/i,
+      name: /create a todo here/i,
     })
 
     expect(message).toBeInTheDocument()

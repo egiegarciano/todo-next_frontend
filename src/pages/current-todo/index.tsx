@@ -2,15 +2,13 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { useCurrentTodosQuery } from '@/services/todo'
-import { useAppSelector } from '@/redux/store'
 
 import Section from '@/components/Section'
 import Pagination from '@/components/Pagination'
 
 const CurrentTodo = () => {
-  const token = useAppSelector(({ auth }) => auth.token)
   const [page, setPage] = useState(1)
-  const { data, isLoading, refetch } = useCurrentTodosQuery({ token, page })
+  const { data, isLoading, refetch } = useCurrentTodosQuery(page)
 
   useEffect(() => {
     refetch()
@@ -49,9 +47,9 @@ const CurrentTodo = () => {
         </>
       ) : (
         <>
-          <p>No current todo yet</p>
+          <p>You don't have any todos</p>
           <Link href='create-todo/' className='text-blue-700'>
-            Create todo here
+            Create a todo here
           </Link>
         </>
       )}

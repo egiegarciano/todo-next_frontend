@@ -46,7 +46,7 @@ const NavBar = () => {
 
   const handleOnLogout = async () => {
     try {
-      const { message } = await authLogout(token).unwrap()
+      const { message } = await authLogout().unwrap()
       if (message) {
         await router.push('/login')
         dispatch(setToken({ token: '', username: '' }))

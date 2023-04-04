@@ -1,5 +1,4 @@
 export type CreateTodoRequest = {
-  token: string
   name: string
   memo: string
   is_important: boolean
@@ -24,20 +23,11 @@ export type TodoListResponse = {
   results: TodoResponse[]
 }
 
-export type TodoListRequest = {
-  token: string
-  page?: number
-}
-
-export type TodoDetailRequest = {
-  token: string
-  id: number
-}
-
 export type UpdateTodoRequest = {
   id: number
 } & CreateTodoRequest
 
 export type CompleteTodoRequest = {
+  id: number
   completed_at: string
-} & TodoDetailRequest
+}

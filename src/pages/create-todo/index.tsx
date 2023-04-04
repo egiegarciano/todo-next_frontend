@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { useCreateTodoMutation } from '@/services/todo'
-import { useAppSelector } from '@/redux/store'
 
 import ControlledInput from '@/components/ControlledInput'
 import ControlledTextarea from '@/components/ControlledTextarea'
@@ -33,12 +32,10 @@ const CreateTodo = () => {
     defaultValues: INITIAL_VALUES,
   })
 
-  const token = useAppSelector((state) => state.auth.token)
-
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setIsLoading(true)
     try {
-      const res = await createTodo({ token, ...data }).unwrap()
+      const res = await createTodo(data).unwrap()
       if (res.user) {
         await router.push('/current-todo')
         setIsLoading(false)
