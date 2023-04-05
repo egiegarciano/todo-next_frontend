@@ -21,7 +21,7 @@ export const verifiedLinks: Link[] = [
 export const unverifiedLinks: Link[] = [
   {
     name: 'Sign Up',
-    href: '/sign-up',
+    href: '/signup',
   },
   {
     name: 'Login',

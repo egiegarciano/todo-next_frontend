@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import Cookies from 'js-cookie'
 
 import { useLoginMutation } from '@/services/auth'
 import { useAppDispatch } from '@/redux/store'
@@ -37,13 +38,14 @@ const Login = () => {
     try {
       const { token } = await authLogin(inputs).unwrap()
       if (token) {
-        await router.push('/')
+        router.push('/')
         dispatch(
           setToken({
             token: token,
             username: inputs.username,
           })
         )
+        Cookies.set('token', token)
         setIsLoading(false)
       }
     } catch (error: any) {

@@ -1,6 +1,7 @@
 import 'whatwg-fetch'
 import userEvent from '@testing-library/user-event'
 import { screen, waitFor, render } from '@testing-library/react'
+import Cookies from 'js-cookie'
 
 import { setupApiStore } from '@/utils/redux-test-utils'
 import { baseApi } from '@/services/base'
@@ -18,6 +19,9 @@ beforeEach(async () => {
     )
   })
 })
+
+jest.mock('js-cookie', () => jest.fn())
+;(Cookies as any).mockImplementation(() => ({ get: () => 'token' }))
 
 describe('will display the current-todo page', () => {
   it('will render heading text', () => {

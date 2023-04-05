@@ -1,5 +1,4 @@
 import 'whatwg-fetch'
-import { useRouter } from 'next/router'
 import { screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -52,7 +51,7 @@ describe('NavBar Component', () => {
         name: /sign up/i,
       })
 
-      expect(signUpLink).toHaveAttribute('href', '/sign-up')
+      expect(signUpLink).toHaveAttribute('href', '/signup')
       expect(signUpLink).toBeInTheDocument()
     })
     it('renders a login link text', () => {

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useLogoutMutation } from '@/services/auth'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { setToken } from '@/redux/auth/slice'
+import Cookies from 'js-cookie'
 
 import { verifiedLinks } from '@/constants/linksData'
 import { unverifiedLinks } from '@/constants/linksData'
@@ -48,8 +49,9 @@ const NavBar = () => {
     try {
       const { message } = await authLogout().unwrap()
       if (message) {
-        await router.push('/login')
+        router.push('/login')
         dispatch(setToken({ token: '', username: '' }))
+        Cookies.remove('token')
         setIsOpen(false)
         document.body.classList.remove('overflow-hidden')
       }

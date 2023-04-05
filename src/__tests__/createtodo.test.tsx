@@ -2,6 +2,7 @@ import 'whatwg-fetch'
 import { useRouter } from 'next/router'
 import userEvent from '@testing-library/user-event'
 import { screen, waitFor, render } from '@testing-library/react'
+import Cookies from 'js-cookie'
 
 import { setupApiStore } from '@/utils/redux-test-utils'
 import { baseApi } from '@/services/base'
@@ -20,6 +21,9 @@ jest.mock('next/router', () => {
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
 beforeEach(() => render(<CreateTodo />, { wrapper: storeRef.wrapper }))
+
+jest.mock('js-cookie', () => jest.fn())
+;(Cookies as any).mockImplementation(() => ({ get: () => 'token' }))
 
 describe('will display the create-todo page', () => {
   it('will render heading text', () => {

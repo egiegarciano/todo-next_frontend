@@ -7,7 +7,7 @@ import { setupApiStore } from '@/utils/redux-test-utils'
 import { useRegisterMutation } from '@/services/auth'
 import { baseApi } from '@/services/base'
 import AuthReducer from '../redux/auth/slice'
-import SignUp from '@/pages/sign-up'
+import SignUp from '@/pages/signup'
 import { setupRegisterErrorHandler } from '@/mocks/errorHandlers'
 
 jest.mock('next/router', () => {

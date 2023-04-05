@@ -55,7 +55,7 @@ const TodoDetail = () => {
       }
     } catch (error) {
       setIsLoading(true)
-      console.log(false)
+      console.log(error)
     }
   }
 
@@ -70,7 +70,7 @@ const TodoDetail = () => {
       }
     } catch (error) {
       setIsLoading(true)
-      console.log(false)
+      console.log(error)
     }
   }
 
@@ -82,7 +82,7 @@ const TodoDetail = () => {
       setIsLoading(false)
     } catch (error) {
       setIsLoading(true)
-      console.log(false)
+      console.log(error)
     }
   }
 

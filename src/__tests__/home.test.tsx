@@ -1,10 +1,14 @@
 import { render, screen } from '@testing-library/react'
+import Cookies from 'js-cookie'
 
 import Home from '../pages/index'
 
-describe('Home', () => {
-  beforeEach(() => render(<Home />))
+beforeEach(() => render(<Home />))
 
+jest.mock('js-cookie', () => jest.fn())
+;(Cookies as any).mockImplementation(() => ({ get: () => 'token' }))
+
+describe('Home', () => {
   it('renders a heading', () => {
     const heading = screen.getByRole('heading', {
       name: /simply your todos\. woohoo!/i,
