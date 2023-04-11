@@ -10,9 +10,9 @@ import CurrentTodo from '@/pages/current-todo'
 
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
-beforeEach(async () => {
-  render(<CurrentTodo />, { wrapper: storeRef.wrapper })
+const view = () => render(<CurrentTodo />, { wrapper: storeRef.wrapper })
 
+beforeEach(async () => {
   await waitFor(() => {
     storeRef.store.dispatch(
       setToken({ token: 'sampleToken143', username: 'johndoe' })
@@ -25,6 +25,8 @@ jest.mock('js-cookie', () => jest.fn())
 
 describe('will display the current-todo page', () => {
   it('will render heading text', () => {
+    view()
+
     const heading = screen.getByRole('heading', {
       name: /current todos/i,
     })
@@ -33,6 +35,8 @@ describe('will display the current-todo page', () => {
   })
 
   it('will render the message when theres no currently todos yet', () => {
+    view()
+
     const message = screen.getByText(/you don't have any todos/i)
 
     const link = screen.getByRole('link', {
@@ -46,6 +50,8 @@ describe('will display the current-todo page', () => {
 
 describe('will render the list of todos', () => {
   it('will render the current todos', async () => {
+    view()
+
     const link = await screen.findByRole('link', {
       name: 'First page todo',
     })
@@ -56,6 +62,8 @@ describe('will render the list of todos', () => {
 
 describe('will render the pagination', () => {
   it('will render next and previous page button', async () => {
+    view()
+
     const prevBtn = await screen.findByRole('button', {
       name: /previous page/i,
     })
@@ -70,6 +78,8 @@ describe('will render the pagination', () => {
   })
 
   it('will render start and end page button', async () => {
+    view()
+
     const startBtn = await screen.findByRole('button', {
       name: /start page/i,
     })
@@ -84,6 +94,8 @@ describe('will render the pagination', () => {
   })
 
   it('will change the todo list when clicking the page number button', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const pageTwoBtn = await screen.findByRole('button', {
@@ -100,6 +112,8 @@ describe('will render the pagination', () => {
   })
 
   it('will change the todo list when clicking the next and prev button', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const nextBtn = await screen.findByRole('button', {
@@ -128,6 +142,8 @@ describe('will render the pagination', () => {
   })
 
   it('will change the todo list when clicking the start and end button', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const startBtn = await screen.findByRole('button', {

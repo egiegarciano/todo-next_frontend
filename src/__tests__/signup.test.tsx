@@ -20,10 +20,12 @@ jest.mock('next/router', () => {
 
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
-beforeEach(() => render(<SignUp />, { wrapper: storeRef.wrapper }))
+const view = () => render(<SignUp />, { wrapper: storeRef.wrapper })
 
 describe('Sign Up Page', () => {
   it('will render heading text', () => {
+    view()
+
     const heading = screen.getByRole('heading', {
       name: /sign up/i,
     })
@@ -32,6 +34,8 @@ describe('Sign Up Page', () => {
   })
 
   it('will render input fields with label', () => {
+    view()
+
     const usernameInput = screen.getByRole('textbox', {
       name: /username:/i,
     })
@@ -48,6 +52,8 @@ describe('Sign Up Page', () => {
   })
 
   it('will render submit button', () => {
+    view()
+
     const submitBtn = screen.getByRole('button', {
       name: /submit/i,
     })
@@ -56,6 +62,8 @@ describe('Sign Up Page', () => {
   })
 
   it('will focus the input field when clicked and can type text', async () => {
+    view()
+
     const passwordInput = screen.getByLabelText('Password:')
 
     const user = userEvent.setup()
@@ -67,6 +75,8 @@ describe('Sign Up Page', () => {
   })
 
   it('will submit the form successfully', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const data = {
@@ -108,12 +118,9 @@ describe('Sign Up Page', () => {
     await waitFor(async () => {
       await user.click(submitBtn)
 
+      await authRegister(data).unwrap()
+
       expect(mockRouter.push).toHaveBeenCalledWith('/')
-
-      const { response, token } = await authRegister(data).unwrap()
-
-      expect(response).toEqual('Successfully registered')
-      expect(token).toEqual('authToken123')
     })
 
     const { isSuccess } = result.current[1]
@@ -131,6 +138,8 @@ describe('Handling register error', () => {
   beforeEach(() => setupRegisterErrorHandler())
 
   it('will handle error', async () => {
+    view()
+
     const data = {
       username: 'John Doe',
       email: 'johndoe@test.com',

@@ -52,15 +52,19 @@ const SignUp = () => {
         )
         setIsLoading(false)
       }
-    } catch ({ data }: any) {
+    } catch (error: any) {
       setIsLoading(false)
-      dispatch(
-        showToast({
-          isShow: true,
-          text: data.username ? data.username[0] : data.error,
-          icon: 'success',
-        })
-      )
+      if (error) {
+        dispatch(
+          showToast({
+            isShow: true,
+            text: error.data.username
+              ? error.data.username[0]
+              : error.data.error,
+            icon: 'success',
+          })
+        )
+      }
     }
   }
 

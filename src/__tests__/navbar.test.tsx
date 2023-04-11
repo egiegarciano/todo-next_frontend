@@ -8,7 +8,7 @@ import NavBar from '../components/NavBar'
 import { renderWithProviders } from '@/utils/redux-test-utils'
 import Clipboard from '@/components/icons/Clipboard'
 
-beforeEach(() => renderWithProviders(<NavBar />))
+const view = () => renderWithProviders(<NavBar />)
 
 afterEach(() => cleanup)
 
@@ -22,6 +22,8 @@ jest.mock('next/router', () => {
 
 describe('NavBar Component', () => {
   it('renders nav bar', () => {
+    view()
+
     const navBar = screen.getByRole('navigation')
     expect(navBar).toBeInTheDocument()
 
@@ -38,6 +40,8 @@ describe('NavBar Component', () => {
   })
 
   it('renders a logo text', () => {
+    view()
+
     const logoText = screen.getByRole('link', {
       name: /todo wohoo/i,
     })
@@ -47,6 +51,8 @@ describe('NavBar Component', () => {
 
   describe('displays the links of unauthenticated user', () => {
     it('renders a signup link text', () => {
+      view()
+
       const signUpLink = screen.getByRole('link', {
         name: /sign up/i,
       })
@@ -55,6 +61,8 @@ describe('NavBar Component', () => {
       expect(signUpLink).toBeInTheDocument()
     })
     it('renders a login link text', () => {
+      view()
+
       const loginLink = screen.getByRole('link', {
         name: /login/i,
       })
@@ -66,6 +74,8 @@ describe('NavBar Component', () => {
 
   describe('displays the links of authenticated user', () => {
     it('renders a current link text', async () => {
+      view()
+
       await waitFor(() => {
         setupStore.dispatch(
           setToken({ token: 'thisIsAToken', username: 'JohnDoe' })
@@ -88,6 +98,8 @@ describe('NavBar Component', () => {
 
   describe('will able to logut user', () => {
     it('renders a current link text', async () => {
+      view()
+
       const user = userEvent.setup()
 
       const logoutLink = screen.getByText('Logout')

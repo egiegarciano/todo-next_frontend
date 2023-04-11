@@ -20,13 +20,15 @@ jest.mock('next/router', () => {
 
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
-beforeEach(() => render(<CreateTodo />, { wrapper: storeRef.wrapper }))
+const view = () => render(<CreateTodo />, { wrapper: storeRef.wrapper })
 
 jest.mock('js-cookie', () => jest.fn())
 ;(Cookies as any).mockImplementation(() => ({ get: () => 'token' }))
 
 describe('will display the create-todo page', () => {
   it('will render heading text', () => {
+    view()
+
     const heading = screen.getByRole('heading', {
       name: /create a to do/i,
     })
@@ -35,6 +37,8 @@ describe('will display the create-todo page', () => {
   })
 
   it('will render input fields with label', () => {
+    view()
+
     const titleInput = screen.getByRole('textbox', {
       name: /title:/i,
     })
@@ -53,6 +57,8 @@ describe('will display the create-todo page', () => {
   })
 
   it('will render submit button', () => {
+    view()
+
     const submitBtn = screen.getByRole('button', {
       name: /submit/i,
     })
@@ -61,6 +67,8 @@ describe('will display the create-todo page', () => {
   })
 
   it('will focus the input field when clicked and can type text', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const memoInput = screen.getByRole('textbox', {
@@ -74,6 +82,8 @@ describe('will display the create-todo page', () => {
   })
 
   it('will check and uncheck the checkbox when clicked', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const checkbox = screen.getByRole('checkbox', {
@@ -88,6 +98,8 @@ describe('will display the create-todo page', () => {
 
 describe('will create a todo successfully', () => {
   it('will submit form successfully', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const mockRouter = {
@@ -98,6 +110,12 @@ describe('will create a todo successfully', () => {
     const submitBtn = screen.getByRole('button', {
       name: 'Submit',
     })
+
+    const titleInput = screen.getByRole('textbox', {
+      name: /title:/i,
+    })
+
+    await user.type(titleInput, 'sample todo')
 
     await waitFor(async () => {
       storeRef.store.dispatch(
@@ -119,6 +137,8 @@ describe('Handling login error', () => {
   beforeEach(() => setupCreateTodoErrorHandler())
 
   it('will handle error', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const submitBtn = screen.getByRole('button', {

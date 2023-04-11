@@ -3,13 +3,15 @@ import Cookies from 'js-cookie'
 
 import Home from '../pages/index'
 
-beforeEach(() => render(<Home />))
+const view = () => render(<Home />)
 
 jest.mock('js-cookie', () => jest.fn())
 ;(Cookies as any).mockImplementation(() => ({ get: () => 'token' }))
 
 describe('Home', () => {
   it('renders a heading', () => {
+    view()
+
     const heading = screen.getByRole('heading', {
       name: /simply your todos\. woohoo!/i,
     })
@@ -19,6 +21,8 @@ describe('Home', () => {
 
   describe('renders a create todo button', () => {
     it('displays a link button with correct text', () => {
+      view()
+
       const createTodoBtn = screen.getByRole('link', {
         name: /create todo/i,
       })
@@ -26,6 +30,8 @@ describe('Home', () => {
       expect(createTodoBtn).toBeInTheDocument()
     })
     it('have the correct value of href attribute', () => {
+      view()
+
       const createTodoBtn = screen.getByRole('link', {
         name: /create todo/i,
       })

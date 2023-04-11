@@ -18,10 +18,12 @@ jest.mock('next/router', () => {
 
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
-beforeEach(() => render(<Login />, { wrapper: storeRef.wrapper }))
+const view = () => render(<Login />, { wrapper: storeRef.wrapper })
 
 describe('will display the login page', () => {
   it('will render heading text', () => {
+    view()
+
     const heading = screen.getByRole('heading', {
       name: /login/i,
     })
@@ -30,6 +32,8 @@ describe('will display the login page', () => {
   })
 
   it('will render input fields with label', () => {
+    view()
+
     const usernameInput = screen.getByRole('textbox', {
       name: /username:/i,
     })
@@ -41,6 +45,8 @@ describe('will display the login page', () => {
   })
 
   it('will render submit button', () => {
+    view()
+
     const submitBtn = screen.getByRole('button', {
       name: /submit/i,
     })
@@ -49,6 +55,8 @@ describe('will display the login page', () => {
   })
 
   it('will focus the input field when clicked and can type text', async () => {
+    view()
+
     const user = userEvent.setup()
 
     const usernameInput = screen.getByRole('textbox', {
@@ -64,6 +72,8 @@ describe('will display the login page', () => {
 
 describe('will able to login successfully', () => {
   it('will submit form successfully', async () => {
+    view()
+
     const user = userEvent.setup()
     const mockRouter = {
       push: jest.fn(),
@@ -73,6 +83,15 @@ describe('will able to login successfully', () => {
     const submitBtn = screen.getByRole('button', {
       name: 'Submit',
     })
+
+    const usernameInput = screen.getByRole('textbox', {
+      name: /username:/i,
+    })
+
+    const passwordInput = screen.getByLabelText('Password:')
+
+    await user.type(usernameInput, 'johndoe')
+    await user.type(passwordInput, 'P@ssword123!')
 
     await waitFor(async () => {
       try {
@@ -95,6 +114,8 @@ describe('Handling login error', () => {
   beforeEach(() => setupLoginErrorHandler())
 
   it('will handle error', async () => {
+    view()
+
     const data = {
       username: 'John Doe',
       password: 'Password',

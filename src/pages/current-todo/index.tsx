@@ -47,7 +47,7 @@ const CurrentTodo = () => {
         </>
       ) : (
         <>
-          <p>You don't have any todos</p>
+          <p>You don&apos;t have any todos</p>
           <Link href='create-todo/' className='text-blue-700'>
             Create a todo here
           </Link>
