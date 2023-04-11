@@ -1,7 +1,7 @@
 export type CreateTodoRequest = {
   name: string
-  memo: string
-  is_important: boolean
+  memo?: string
+  is_important?: boolean
 }
 
 export type TodoResponse = {

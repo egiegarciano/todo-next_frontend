@@ -1,22 +1,22 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { InferType } from 'yup'
 import Cookies from 'js-cookie'
 
 import { useLoginMutation } from '@/services/auth'
 import { useAppDispatch } from '@/redux/store'
 import { showToast } from '@/redux/toast/slice'
 import { setToken } from '@/redux/auth/slice'
+import { loginSchema } from '@/validators/loginValidator'
 
 import ControlledInput from '@/components/ControlledInput'
 import Section from '@/components/Section'
 import Form from '@/components/Form'
 import Button from '@/components/Button'
 
-type FormInputs = {
-  username: string
-  password: string
-}
+type FormInputs = InferType<typeof loginSchema>
 
 const INITIAL_VALUES = {
   username: '',
@@ -31,21 +31,23 @@ const Login = () => {
 
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
+    resolver: yupResolver(loginSchema),
+    mode: 'onBlur',
   })
 
   const onSubmit: SubmitHandler<FormInputs> = async (inputs) => {
     setIsLoading(true)
     try {
       const { token } = await authLogin(inputs).unwrap()
+      Cookies.set('token', token)
       if (token) {
-        router.push('/')
+        await router.push('/')
         dispatch(
           setToken({
             token: token,
             username: inputs.username,
           })
         )
-        Cookies.set('token', token)
         setIsLoading(false)
       }
     } catch (error: any) {

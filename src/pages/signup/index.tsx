@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { InferType } from 'yup'
+import Cookies from 'js-cookie'
 
 import { useRegisterMutation } from '@/services/auth'
 import { useAppDispatch } from '@/redux/store'
@@ -40,6 +41,7 @@ const SignUp = () => {
     setIsLoading(true)
     try {
       const { token, username, response } = await authRegister(data).unwrap()
+      Cookies.set('token', token)
       if (response) {
         await router.push('/')
         dispatch(

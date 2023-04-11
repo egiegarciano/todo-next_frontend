@@ -22,9 +22,11 @@ const persistConfig = {
   whitelist: ['auth'],
 }
 
+//  note: you don't have to persist the auth slice since, the token was store in cookies
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const setupStore = configureStore({
+  devTools: process.env.NODE_ENV !== 'production',
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

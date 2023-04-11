@@ -11,6 +11,7 @@ type Props = {
 
 const Button = (props: Props) => {
   const { isLoading, title, type, className, ...rest } = props
+
   return (
     <button
       type={type ?? 'submit'}

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { InferType } from 'yup'
 
 import {
   useTodoDetailQuery,
@@ -9,6 +11,7 @@ import {
   useCompleteTodoMutation,
   useDeleteTodoMutation,
 } from '@/services/todo'
+import { updateTodoSchema } from '@/validators/todoValidator'
 
 import ControlledInput from '@/components/ControlledInput'
 import ControlledTextarea from '@/components/ControlledTextarea'
@@ -18,11 +21,7 @@ import Form from '@/components/Form'
 import Button from '@/components/Button'
 import ArrowLeft from '@/components/icons/ArrowLeft'
 
-type FormInputs = {
-  name: string
-  memo: string
-  is_important: boolean
-}
+type FormInputs = InferType<typeof updateTodoSchema>
 
 const INITIAL_VALUES = {
   name: '',
@@ -42,6 +41,8 @@ const TodoDetail = () => {
 
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
+    resolver: yupResolver(updateTodoSchema),
+    mode: 'onChange',
     values: data,
   })
 
