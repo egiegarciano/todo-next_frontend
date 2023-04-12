@@ -48,12 +48,13 @@ const NavBar = () => {
   const handleOnLogout = async () => {
     try {
       const { message } = await authLogout().unwrap()
+
       if (message) {
-        router.push('/login')
-        dispatch(setToken({ token: '', username: '' }))
         Cookies.remove('token')
+        dispatch(setToken({ token: '', username: '' }))
         setIsOpen(false)
         document.body.classList.remove('overflow-hidden')
+        router.push('/login')
       }
     } catch (error) {
       console.log(error)
@@ -72,7 +73,7 @@ const NavBar = () => {
           <p>Todo Wohoo</p>
         </Link>
         <div
-          className='rounded-md border px-2 py-1 lg:hidden'
+          className='cursor-pointer rounded-md border px-2 py-1 lg:hidden'
           onClick={handleToggleMenu}
         >
           {isOpen ? <XMark /> : <Bars3 />}

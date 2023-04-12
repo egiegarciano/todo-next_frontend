@@ -39,9 +39,9 @@ const Login = () => {
     setIsLoading(true)
     try {
       const { token } = await authLogin(inputs).unwrap()
-      Cookies.set('token', token)
+
       if (token) {
-        await router.push('/')
+        Cookies.set('token', token)
         dispatch(
           setToken({
             token: token,
@@ -49,6 +49,7 @@ const Login = () => {
           })
         )
         setIsLoading(false)
+        router.push('/')
       }
     } catch (error: any) {
       setIsLoading(false)

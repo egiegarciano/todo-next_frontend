@@ -41,9 +41,9 @@ const SignUp = () => {
     setIsLoading(true)
     try {
       const { token, username, response } = await authRegister(data).unwrap()
-      Cookies.set('token', token)
+
       if (response) {
-        await router.push('/')
+        Cookies.set('token', token)
         dispatch(
           setToken({
             token,
@@ -51,6 +51,7 @@ const SignUp = () => {
           })
         )
         setIsLoading(false)
+        router.push('/')
       }
     } catch (error: any) {
       setIsLoading(false)
