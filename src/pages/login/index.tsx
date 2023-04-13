@@ -42,15 +42,13 @@ const Login = () => {
       const { token } = await authLogin(inputs).unwrap()
       Cookies.set('token', token)
 
-      await waitUntil(1500)
-
       dispatch(
         setToken({
           token: token,
           username: inputs.username,
         })
       )
-      await router.push('/')
+      router.push('/')
     } catch (error: any) {
       dispatch(
         showToast({

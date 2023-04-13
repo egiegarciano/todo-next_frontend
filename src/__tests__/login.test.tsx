@@ -16,9 +16,9 @@ jest.mock('next/router', () => {
   }
 })
 
-jest.mock('@/utils/set-timeout', () => ({
-  waitUntil: jest.fn().mockResolvedValue(true),
-}))
+// jest.mock('@/utils/set-timeout', () => ({
+//   waitUntil: jest.fn().mockResolvedValue(true),
+// }))
 
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
