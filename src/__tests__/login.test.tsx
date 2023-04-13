@@ -16,6 +16,10 @@ jest.mock('next/router', () => {
   }
 })
 
+jest.mock('@/utils/set-timeout', () => ({
+  waitUntil: jest.fn().mockResolvedValue(true),
+}))
+
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
 const view = () => render(<Login />, { wrapper: storeRef.wrapper })
@@ -94,14 +98,9 @@ describe('will able to login successfully', () => {
     await user.type(passwordInput, 'P@ssword123!')
 
     await waitFor(async () => {
-      try {
-        await user.click(submitBtn)
-        expect(mockRouter.push).toHaveBeenCalledWith('/')
-      } catch (error) {
-        // of course error this will not be equal to null, this is just an example
-        // I think try/catch is not needed here since we intercept the api to be success
-        expect(error).toEqual(null)
-      }
+      await user.click(submitBtn)
+
+      expect(mockRouter.push).toHaveBeenCalledWith('/')
     })
 
     const token = storeRef.store.getState().auth.token

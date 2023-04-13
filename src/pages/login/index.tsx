@@ -15,6 +15,7 @@ import ControlledInput from '@/components/ControlledInput'
 import Section from '@/components/Section'
 import Form from '@/components/Form'
 import Button from '@/components/Button'
+import { waitUntil } from '@/utils/set-timeout'
 
 type FormInputs = InferType<typeof loginSchema>
 
@@ -39,20 +40,18 @@ const Login = () => {
     setIsLoading(true)
     try {
       const { token } = await authLogin(inputs).unwrap()
+      Cookies.set('token', token)
 
-      if (token) {
-        Cookies.set('token', token)
-        dispatch(
-          setToken({
-            token: token,
-            username: inputs.username,
-          })
-        )
-        setIsLoading(false)
-        router.push('/')
-      }
+      await waitUntil(1500)
+
+      dispatch(
+        setToken({
+          token: token,
+          username: inputs.username,
+        })
+      )
+      await router.push('/')
     } catch (error: any) {
-      setIsLoading(false)
       dispatch(
         showToast({
           isShow: true,
@@ -60,6 +59,8 @@ const Login = () => {
           icon: 'error',
         })
       )
+    } finally {
+      setIsLoading(false)
     }
   }
 
