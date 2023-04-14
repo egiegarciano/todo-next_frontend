@@ -7,6 +7,7 @@ import { setupApiStore } from '@/utils/redux-test-utils'
 import { baseApi } from '@/services/base'
 import AuthReducer, { setToken } from '../redux/auth/slice'
 import CurrentTodo from '@/pages/current-todo'
+import { setEmptyCurrentTodoData } from '@/mocks/commonHandlers'
 
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
@@ -34,10 +35,12 @@ describe('will display the current-todo page', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it('will render the message when theres no currently todos yet', () => {
+  it('will render the message when theres no currently todos yet', async () => {
     view()
 
-    const message = screen.getByText(/you don't have any todos/i)
+    setEmptyCurrentTodoData()
+
+    const message = await screen.findByText(/you don't have any todos/i)
 
     const link = screen.getByRole('link', {
       name: /create a todo here/i,

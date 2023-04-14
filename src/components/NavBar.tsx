@@ -50,7 +50,7 @@ const NavBar = () => {
       const { message } = await authLogout().unwrap()
 
       if (message) {
-        Cookies.remove('token')
+        Cookies.remove('token', { sameSite: 'Strict' })
         dispatch(setToken({ token: '', username: '' }))
         setIsOpen(false)
         document.body.classList.remove('overflow-hidden')

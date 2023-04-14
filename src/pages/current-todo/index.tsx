@@ -20,11 +20,11 @@ const CurrentTodo = () => {
 
   return (
     <Section title='Current Todos' className='mb-32 lg:pb-20'>
-      {data?.results.length ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
         <>
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
+          {data?.results.length ? (
             <div className='flex w-full flex-col space-y-5 rounded-md bg-blue-500 px-4 py-8 md:w-[380px] lg:w-[500px]'>
               {data?.results.map((item) => (
                 <Link
@@ -43,14 +43,14 @@ const CurrentTodo = () => {
                 onPageChange={onPageChange}
               />
             </div>
+          ) : (
+            <>
+              <p>You don&apos;t have any todos</p>
+              <Link href='create-todo/' className='text-blue-700'>
+                Create a todo here
+              </Link>
+            </>
           )}
-        </>
-      ) : (
-        <>
-          <p>You don&apos;t have any todos</p>
-          <Link href='create-todo/' className='text-blue-700'>
-            Create a todo here
-          </Link>
         </>
       )}
     </Section>

@@ -43,7 +43,7 @@ const SignUp = () => {
       const { token, username, response } = await authRegister(data).unwrap()
 
       if (response) {
-        Cookies.set('token', token)
+        Cookies.set('token', token, { sameSite: 'Strict' })
         dispatch(
           setToken({
             token,

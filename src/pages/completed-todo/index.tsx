@@ -19,7 +19,7 @@ const CompletedTodo = () => {
 
   return (
     <Section title='Completed Todos' className='mb-32 lg:pb-20'>
-      {data?.results ? (
+      {data?.results.length ? (
         <>
           {isLoading ? (
             <div>Loading...</div>
@@ -42,7 +42,7 @@ const CompletedTodo = () => {
           )}
         </>
       ) : (
-        <div>No current todo yet</div>
+        <p>You haven&apos;t completed any todos yet</p>
       )}
     </Section>
   )

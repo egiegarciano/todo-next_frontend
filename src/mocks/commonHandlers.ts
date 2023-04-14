@@ -1,4 +1,5 @@
 import { rest } from 'msw'
+import { server } from './server'
 
 export const commonHandlers = [
   rest.post('http://localhost:8000/auth/logout/', async (req, res, ctx) => {
@@ -101,3 +102,21 @@ export const commonHandlers = [
     }
   }),
 ]
+
+export const setEmptyCurrentTodoData = () => {
+  server.use(
+    rest.get('http://localhost:8000/todo/current-todos/', (req, res, ctx) => {
+      return res(
+        ctx.json({
+          next: null,
+          previous: null,
+          total_items: 1,
+          total_pages: 1,
+          page: 1,
+          results: [],
+        }),
+        ctx.status(200)
+      )
+    })
+  )
+}

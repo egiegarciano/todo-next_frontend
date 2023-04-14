@@ -38,9 +38,10 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (inputs) => {
     setIsLoading(true)
+
     try {
       const { token } = await authLogin(inputs).unwrap()
-      Cookies.set('token', token)
+      Cookies.set('token', token, { sameSite: 'Strict' })
 
       dispatch(
         setToken({
