@@ -13,14 +13,14 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const authToken = req.cookies.get('token')?.value
 
-  if (authToken) {
-    if (unauthenticatedUrls.some((url) => pathname.endsWith(url))) {
+  if (unauthenticatedUrls.some((url) => pathname.endsWith(url))) {
+    if (authToken) {
       return NextResponse.redirect(new URL('/', req.url))
     }
   }
 
-  if (!authToken) {
-    if (authenticatedUrls.some((url) => pathname.endsWith(url))) {
+  if (authenticatedUrls.some((url) => pathname.endsWith(url))) {
+    if (!authToken) {
       return NextResponse.redirect(new URL('/login', req.url))
     }
   }
