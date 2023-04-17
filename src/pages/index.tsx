@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { GetServerSideProps } from 'next'
 
 export default function Home() {
   return (
@@ -20,4 +21,21 @@ export default function Home() {
       </Link>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const authToken = req.cookies.token
+
+  if (!authToken) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }

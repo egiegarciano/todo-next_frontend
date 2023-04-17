@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const authenticatedUrls = [
-  '/current-todo',
-  '/create-todo',
-  '/completed-todo',
-  '/',
-]
+const authenticatedUrls = ['/current-todo', '/create-todo', '/completed-todo']
 const unauthenticatedUrls = ['/login', '/signup']
 
 export function middleware(req: NextRequest) {
