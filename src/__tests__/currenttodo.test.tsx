@@ -2,12 +2,22 @@ import 'whatwg-fetch'
 import userEvent from '@testing-library/user-event'
 import { screen, waitFor, render } from '@testing-library/react'
 import Cookies from 'js-cookie'
+import { useRouter } from 'next/router'
 
 import { setupApiStore } from '@/utils/redux-test-utils'
 import { baseApi } from '@/services/base'
 import AuthReducer, { setToken } from '../redux/auth/slice'
 import CurrentTodo from '@/pages/current-todo'
 import { setEmptyCurrentTodoData } from '@/mocks/commonHandlers'
+
+jest.mock('next/router', () => {
+  return {
+    useRouter: jest.fn().mockReturnValue({
+      push: jest.fn(),
+      query: {},
+    }),
+  }
+})
 
 const storeRef = setupApiStore(baseApi, { auth: AuthReducer })
 
@@ -99,13 +109,26 @@ describe('will render the pagination', () => {
   it('will change the todo list when clicking the page number button', async () => {
     view()
 
+    const mockRouter = {
+      push: jest.fn(),
+      query: {},
+    }
+    ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
+
     const user = userEvent.setup()
 
     const pageTwoBtn = await screen.findByRole('button', {
       name: /page 2/i,
     })
 
-    await user.click(pageTwoBtn)
+    await waitFor(async () => {
+      await user.click(pageTwoBtn)
+
+      expect(mockRouter.push).toHaveBeenCalledWith({
+        pathname: '/current-todo',
+        query: { page: 2 },
+      })
+    })
 
     const pageTwoTodo = await screen.findByRole('link', {
       name: 'Second page todo',

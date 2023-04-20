@@ -20,6 +20,7 @@ import Section from '@/components/Section'
 import Form from '@/components/Form'
 import Button from '@/components/Button'
 import ArrowLeft from '@/components/icons/ArrowLeft'
+import Spinner from '@/components/icons/Spinner'
 
 type FormInputs = InferType<typeof updateTodoSchema>
 
@@ -32,12 +33,13 @@ const INITIAL_VALUES = {
 const TodoDetail = () => {
   const router = useRouter()
   const id = Number(router.query.id)
+  const page = router.query.page
   const [isLoading, setIsLoading] = useState(false)
 
   const [updateTodo] = useUpdateTodoMutation()
   const [completeTodo] = useCompleteTodoMutation()
   const [deleteTodo] = useDeleteTodoMutation()
-  const { data, refetch } = useTodoDetailQuery(id)
+  const { data, refetch, isLoading: detailIsLoading } = useTodoDetailQuery(id)
 
   const { handleSubmit, control, formState } = useForm<FormInputs>({
     defaultValues: INITIAL_VALUES,
@@ -89,39 +91,64 @@ const TodoDetail = () => {
 
   return (
     <Section title='Todo Details'>
-      <Form handleSubmit={handleSubmit} onSubmit={onUpdateTodo}>
-        <Link href='/current-todo' className='absolute top-4'>
-          <ArrowLeft />
-        </Link>
-        <ControlledInput name='name' control={control} label='Title:' />
-        <ControlledTextarea name='memo' control={control} label='Memo:' />
-        <ControlledCheckbox
-          name='is_important'
-          control={control}
-          label='Mark as important:'
-        />
-      </Form>
-      <div className='flex space-x-3 md:space-x-5'>
-        <Button
-          title='Delete'
-          className='w-[85px] bg-red-700 md:w-28'
-          type='button'
-          isLoading={isLoading}
-          onClick={handleOnDeleteTodo}
-        />
-        <Button
-          title='Update'
-          className='w-[85px] md:w-28'
-          isLoading={isLoading}
-        />
-        <Button
-          title='Complete'
-          className='w-[85px] bg-green-700 md:w-28'
-          type='button'
-          isLoading={isLoading}
-          onClick={handleOnCompleteTodo}
-        />
-      </div>
+      {detailIsLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          {data ? (
+            <>
+              <Form handleSubmit={handleSubmit} onSubmit={onUpdateTodo}>
+                <Link
+                  href={{ pathname: '/current-todo', query: { page } }}
+                  className='absolute top-4'
+                >
+                  <ArrowLeft />
+                </Link>
+                <ControlledInput name='name' control={control} label='Title:' />
+                <ControlledTextarea
+                  name='memo'
+                  control={control}
+                  label='Memo:'
+                />
+                <ControlledCheckbox
+                  name='is_important'
+                  control={control}
+                  label='Mark as important:'
+                />
+              </Form>
+              <div className='flex space-x-3 md:space-x-5'>
+                <Button
+                  title='Delete'
+                  className='w-[85px] bg-red-700 md:w-28'
+                  type='button'
+                  isLoading={isLoading}
+                  onClick={handleOnDeleteTodo}
+                />
+                <Button
+                  title='Update'
+                  className='w-[85px] md:w-28'
+                  isLoading={isLoading}
+                />
+                <Button
+                  title='Complete'
+                  className='w-[85px] bg-green-700 md:w-28'
+                  type='button'
+                  isLoading={isLoading}
+                  onClick={handleOnCompleteTodo}
+                />
+              </div>
+            </>
+          ) : (
+            <div className='text-center'>
+              <p>
+                Sorry but there is something to the page you are trying to
+                access
+              </p>
+              <p>Please return to the current todo page</p>
+            </div>
+          )}
+        </>
+      )}
     </Section>
   )
 }

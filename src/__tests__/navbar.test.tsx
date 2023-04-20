@@ -90,7 +90,7 @@ describe('NavBar Component', () => {
         name: /sign up/i,
       })
 
-      expect(currentLink).toHaveAttribute('href', '/current-todo')
+      expect(currentLink).toHaveAttribute('href', '/current-todo?page=1')
       expect(currentLink).toBeInTheDocument()
       expect(signUpLink).not.toBeInTheDocument
     })

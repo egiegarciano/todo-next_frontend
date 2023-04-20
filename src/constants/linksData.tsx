@@ -1,12 +1,16 @@
 type Link = {
   name: string
   href: string
+  query?: { [key: string]: string }
 }
 
 export const verifiedLinks: Link[] = [
   {
     name: 'Current',
     href: '/current-todo',
+    query: {
+      page: '1',
+    },
   },
   {
     name: 'Create',

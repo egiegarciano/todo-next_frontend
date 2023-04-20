@@ -60,7 +60,7 @@ export const commonHandlers = [
           previous: null,
           total_items: 2,
           total_pages: 2,
-          page: page,
+          page: 1,
           results: [
             {
               id: 1,
@@ -83,7 +83,7 @@ export const commonHandlers = [
           previous: null,
           total_items: 2,
           total_pages: 2,
-          page: page,
+          page: 2,
           results: [
             {
               id: 2,

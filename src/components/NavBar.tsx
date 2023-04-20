@@ -90,7 +90,7 @@ const NavBar = () => {
               {verifiedLinks.map((item) => (
                 <Link
                   key={item.name}
-                  href={item.href}
+                  href={{ pathname: item.href, query: item.query }}
                   onClick={handleOnCloseMenu}
                 >
                   {item.name}
