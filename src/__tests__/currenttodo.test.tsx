@@ -14,7 +14,7 @@ jest.mock('next/router', () => {
   return {
     useRouter: jest.fn().mockReturnValue({
       push: jest.fn(),
-      query: {},
+      query: { page: 1 },
     }),
   }
 })
@@ -111,7 +111,7 @@ describe('will render the pagination', () => {
 
     const mockRouter = {
       push: jest.fn(),
-      query: {},
+      query: { page: 1 },
     }
     ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
 

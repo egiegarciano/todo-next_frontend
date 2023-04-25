@@ -27,3 +27,14 @@ export const setupCreateTodoErrorHandler = () => {
     )
   )
 }
+
+export const setupTodoDetailErrorHandler = () => {
+  server.use(
+    rest.get(
+      'http://localhost:8000/todo/todo-detail/NaN',
+      async (req, res, ctx) => {
+        return res(ctx.json(null), ctx.status(400))
+      }
+    )
+  )
+}
