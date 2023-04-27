@@ -54,6 +54,12 @@ export const todoApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
+    deleteCompletedTodos: builder.mutation<void, void>({
+      query: () => ({
+        url: 'todo/completed-todos/',
+        method: 'DELETE',
+      }),
+    }),
   }),
   overrideExisting: true,
 })
@@ -66,4 +72,5 @@ export const {
   useCompleteTodoMutation,
   useDeleteTodoMutation,
   useCompletedTodosQuery,
+  useDeleteCompletedTodosMutation,
 } = todoApi
