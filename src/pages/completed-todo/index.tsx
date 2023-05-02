@@ -9,10 +9,13 @@ import Section from '@/components/Section'
 import Pagination from '@/components/Pagination'
 import Spinner from '@/components/icons/Spinner'
 import Button from '@/components/Button'
+import Modal from '@/components/Modal'
 
 const CompletedTodo = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1)
+
   const {
     data,
     isLoading: completedTodosIsLoading,
@@ -30,12 +33,13 @@ const CompletedTodo = () => {
 
   const handleOnDeleteTodo = async () => {
     setIsLoading(true)
+    setIsOpen(false)
     try {
       await deleteCompletedTodos().unwrap()
-      refetch()
+      await refetch()
       setIsLoading(false)
     } catch (error) {
-      setIsLoading(true)
+      setIsLoading(false)
       console.log(error)
     }
   }
@@ -48,12 +52,33 @@ const CompletedTodo = () => {
         <>
           {data?.results.length ? (
             <div className='flex w-full flex-col space-y-5 rounded-md bg-blue-500 px-4 py-8 md:w-[380px] lg:w-[500px]'>
+              <Modal
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                classNames={{ modal: 'customModal' }}
+              >
+                <p>Are you sure?</p>
+                <div className='mt-10 space-x-10'>
+                  <Button
+                    type='button'
+                    title='Yes'
+                    className='w-20'
+                    onClick={handleOnDeleteTodo}
+                  />
+                  <Button
+                    type='button'
+                    title='No'
+                    className='w-20 bg-red-700'
+                    onClick={() => setIsOpen(false)}
+                  />
+                </div>
+              </Modal>
               <Button
                 title='Delete All'
                 className='w-[100px] self-end bg-red-700 md:w-28 lg:text-base'
                 type='button'
                 isLoading={isLoading}
-                onClick={handleOnDeleteTodo}
+                onClick={() => setIsOpen(true)}
               />
               {data?.results.map((item) => (
                 <p

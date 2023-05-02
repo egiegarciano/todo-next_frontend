@@ -8,6 +8,7 @@ import { wrapper, persistor } from '@/redux/store'
 import Toast from '@/components/Toast'
 import NavBar from '@/components/NavBar'
 import '@/styles/globals.css'
+import '@/styles/modal-default.css'
 
 export default function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest)

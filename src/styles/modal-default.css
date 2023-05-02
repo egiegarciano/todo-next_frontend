@@ -1,0 +1,11 @@
+@import 'react-responsive-modal/styles.css';
+
+.react-responsive-modal-overlay,
+.react-responsive-modal-container,
+.react-responsive-modal-modal {
+  animation-fill-mode: forwards !important;
+}
+
+.customModal {
+  border-radius: 8px;
+}
